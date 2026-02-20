@@ -5,16 +5,24 @@ public class JDBCdemo {
     private static final String userName = "root";
     private static final String password = "Sh@36";
 
-    public static void main(String args[]) {
+    public static void main(String args[]){
 
-        // type-1 to connect database we not cloase the connection
+        // type-2 to connect database and cloase the connection
 
+        Connection con = null;
         try {
-            Connection con = DriverManager.getConnection(url, userName, password);
+            con = DriverManager.getConnection(url, userName, password);
             System.out.println("DB connected suscessfull");
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                con.close();
+                System.out.println("connection is close ");
+            } catch (SQLException e) {
+                throw new RuntimeException();
+            }
         }
-    }
+     }
 
 }
