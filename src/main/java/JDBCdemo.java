@@ -14,11 +14,11 @@ public class JDBCdemo {
 
             insertStudent(con, "Aluma", "aliuma@gmail.com");
 
-            updateStudent(con, 1, "shailesh", "shailesh@gmail.com");
+            updateStudent(con, 4, "shailesh", "shailesh@gmail.com");
 
             selectStudent(con);
 
-            deletsStudents(con, 1);
+           deletsStudents(con, 2);
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -54,10 +54,15 @@ public class JDBCdemo {
 
 
     private static void updateStudent(Connection conn, int id,String name, String email){
-        String sql = "UPDATE student SET name = '"+ name + "', email = '"+ email+"' WHERE id="+id;
+//        String sql = "UPDATE student SET name = '"+ name + "', email = '"+ email+"' WHERE id="+id;
 
-        try(Statement stmt = conn.createStatement()) {
-            int rows = stmt.executeUpdate(sql);
+        String sql = "UPDATE student SET name = ?, email = ? WHERE id= ?";
+
+        try(PreparedStatement  pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, name);
+            pstmt.setString(2,email);
+            pstmt.setInt(3,id);
+            int rows = pstmt.executeUpdate();
             System.out.println("UPDATED: "+rows);
         } catch (SQLException e) {
             throw new RuntimeException(e);
